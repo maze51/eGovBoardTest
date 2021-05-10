@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import egovframework.example.sample.service.SampleDefaultVO;
+import egovframework.example.sample.service.SampleVO;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import portal.bbs.dao.BbsDAO;
 import portal.bbs.service.BbsService;
@@ -22,13 +23,18 @@ public class BbsServiceImpl extends EgovAbstractServiceImpl implements BbsServic
 	private BbsDAO bbsDAO;
 	
 	@Override
-	public List<?> selectList(SampleDefaultVO searchVO) {
+	public List<SampleVO> selectList(SampleDefaultVO searchVO) {
 		return bbsDAO.selectList("BbsQry.selectBbsList", searchVO);
 	}
 
 	@Override
 	public int selectListTotCnt(SampleDefaultVO searchVO) {
 		return bbsDAO.selectOne("BbsQry.selectBbsListTotCnt", searchVO);
+	}
+
+	@Override
+	public SampleVO selectArticle(SampleVO sampleVO) {
+		return bbsDAO.selectOne("BbsQry.selectArticle", sampleVO);
 	}
 
 }

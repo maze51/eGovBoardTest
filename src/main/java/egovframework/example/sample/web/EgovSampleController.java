@@ -69,52 +69,12 @@ public class EgovSampleController {
 	@Resource(name = "beanValidator")
 	protected DefaultBeanValidator beanValidator;
 
-	/**
-	 * 글 목록을 조회한다. (pageing)
-	 * @param searchVO - 조회할 정보가 담긴 SampleDefaultVO
-	 * @param model
-	 * @return "egovSampleList"
-	 * @exception Exception
+	/*
+	 * @RequestMapping(value = "/addSample.do", method = RequestMethod.GET) public
+	 * String addSampleView(@ModelAttribute("searchVO") SampleDefaultVO searchVO,
+	 * Model model) throws Exception { model.addAttribute("sampleVO", new
+	 * SampleVO()); return "sample/egovSampleRegister"; }
 	 */
-	@RequestMapping(value = "/egovSampleList1.do")
-	public String selectSampleList(@ModelAttribute("searchVO") SampleDefaultVO searchVO, ModelMap model) throws Exception {
-
-		/** EgovPropertyService.sample */
-		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
-		searchVO.setPageSize(propertiesService.getInt("pageSize"));
-
-		/** pageing setting */
-		PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
-		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
-		paginationInfo.setPageSize(searchVO.getPageSize());
-
-		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
-		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
-
-		List<?> sampleList = sampleService.selectSampleList(searchVO);
-		model.addAttribute("resultList", sampleList);
-
-		int totCnt = sampleService.selectSampleListTotCnt(searchVO);
-		paginationInfo.setTotalRecordCount(totCnt);
-		model.addAttribute("paginationInfo", paginationInfo);
-
-		return "sample/egovSampleList";
-	}
-
-	/**
-	 * 글 등록 화면을 조회한다.
-	 * @param searchVO - 목록 조회조건 정보가 담긴 VO
-	 * @param model
-	 * @return "egovSampleRegister"
-	 * @exception Exception
-	 */
-	@RequestMapping(value = "/addSample.do", method = RequestMethod.GET)
-	public String addSampleView(@ModelAttribute("searchVO") SampleDefaultVO searchVO, Model model) throws Exception {
-		model.addAttribute("sampleVO", new SampleVO());
-		return "sample/egovSampleRegister";
-	}
 
 	/**
 	 * 글을 등록한다.
@@ -124,39 +84,20 @@ public class EgovSampleController {
 	 * @return "forward:/egovSampleList.do"
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/addSample.do", method = RequestMethod.POST)
-	public String addSample(@ModelAttribute("searchVO") SampleDefaultVO searchVO, SampleVO sampleVO, BindingResult bindingResult, Model model, SessionStatus status)
-			throws Exception {
-
-		// Server-Side Validation
-		beanValidator.validate(sampleVO, bindingResult);
-
-		if (bindingResult.hasErrors()) {
-			model.addAttribute("sampleVO", sampleVO);
-			return "sample/egovSampleRegister";
-		}
-
-		sampleService.insertSample(sampleVO);
-		status.setComplete();
-		return "forward:/egovSampleList.do";
-	}
-
-	/**
-	 * 글 수정화면을 조회한다.
-	 * @param id - 수정할 글 id
-	 * @param searchVO - 목록 조회조건 정보가 담긴 VO
-	 * @param model
-	 * @return "egovSampleRegister"
-	 * @exception Exception
+	/*
+	 * @RequestMapping(value = "/addSample.do", method = RequestMethod.POST) public
+	 * String addSample(@ModelAttribute("searchVO") SampleDefaultVO searchVO,
+	 * SampleVO sampleVO, BindingResult bindingResult, Model model, SessionStatus
+	 * status) throws Exception {
+	 * 
+	 * // Server-Side Validation beanValidator.validate(sampleVO, bindingResult);
+	 * 
+	 * if (bindingResult.hasErrors()) { model.addAttribute("sampleVO", sampleVO);
+	 * return "sample/egovSampleRegister"; }
+	 * 
+	 * sampleService.insertSample(sampleVO); status.setComplete(); return
+	 * "forward:/egovSampleList.do"; }
 	 */
-	@RequestMapping("/updateSampleView.do")
-	public String updateSampleView(@RequestParam("selectedId") String id, @ModelAttribute("searchVO") SampleDefaultVO searchVO, Model model) throws Exception {
-		SampleVO sampleVO = new SampleVO();
-		sampleVO.setId(id);
-		// 변수명은 CoC 에 따라 sampleVO
-		model.addAttribute(selectSample(sampleVO, searchVO));
-		return "sample/egovSampleRegister";
-	}
 
 	/**
 	 * 글을 조회한다.

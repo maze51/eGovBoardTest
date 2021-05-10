@@ -13,4 +13,14 @@
 		  FROM TEST
 	</select>
 	
+	<select id="selectArticle" parameterType="sampleVO" resultType="sampleVO">
+		SELECT id
+			 , name
+			 , description
+			 , useyn
+			 , reguser
+		  FROM TEST
+		 WHERE id = #{id}
+	</select>
+	
 </mapper>
